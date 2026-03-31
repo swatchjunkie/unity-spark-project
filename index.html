@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unity Spark Project — Hello Neighbor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --deep-plum:   #181b49;
+    --warm-violet: #7a51df;
+    --gold:        #e4b463;
+    --saffron:     #ceb7ff;
+    --blush:       #a07ae0;
+    --rose:        #7a51df;
+    --cream:       #f5f3ff;
+    --off-white:   #f0ecff;
+    --charcoal:    #181b49;
+    --mid-gray:    #5a5880;
+    --light-gray:  #e8e2ff;
+    --white:       #FFFFFF;
+    --font-display: 'Quicksand', system-ui, sans-serif;
+    --font-body:    'Open Sans', system-ui, sans-serif;
+    --font-stamp:   'Quicksand', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--charcoal);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(24, 27, 73, 0.97);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--saffron); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--charcoal) !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-weight: 600 !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--saffron) !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(122,81,223,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 75% 20%, rgba(228,180,99,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 80%, rgba(122,81,223,0.3) 0%, transparent 50%),
+      linear-gradient(145deg, var(--deep-plum) 0%, #1e2260 40%, #3a2880 70%, #4a2d9e 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 2.5rem 5rem;
+    gap: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-text {
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(12rem, 20vw, 22rem);
+    color: rgba(255,255,255,0.03);
+    line-height: 0.85;
+    bottom: -2rem; right: -2rem;
+    user-select: none;
+    pointer-events: none;
+  }
+  .hero-content { position: relative; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(228,180,99,0.15);
+    border: 1px solid rgba(228,180,99,0.4);
+    color: var(--gold);
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-tag::before { content: '✦'; font-size: 0.7rem; }
+
+  h1.hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.0;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+  h1.hero-headline em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 480px;
+    margin-bottom: 0.75rem;
+    font-weight: 300;
+    line-height: 1.7;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .hero-manifesto {
+    border-left: 3px solid var(--gold);
+    padding-left: 1.25rem;
+    margin: 1.75rem 0 2.25rem;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+  .hero-manifesto p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.9;
+    font-weight: 400;
+  }
+  .hero-manifesto strong {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), #c89a30);
+    color: var(--charcoal);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(232,160,32,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(232,160,32,0.5); }
+  .btn-outline {
+    display: inline-block;
+    border: 2px solid rgba(255,255,255,0.4);
+    color: var(--white);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--saffron); background: rgba(232,160,32,0.1); }
+
+  /* Hero visual side */
+  .hero-visual {
+    position: relative;
+    animation: fadeIn 1.2s 0.3s ease both;
+  }
+  .hero-circle-stack {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    aspect-ratio: 1;
+  }
+  .hero-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .hero-ring:nth-child(1) { inset: 0; }
+  .hero-ring:nth-child(2) { inset: 8%; border-color: rgba(228,180,99,0.2); }
+  .hero-ring:nth-child(3) { inset: 16%; border-color: rgba(206,183,255,0.2); }
+  .hero-center {
+    position: absolute; inset: 22%;
+    background: radial-gradient(circle, rgba(228,180,99,0.2) 0%, rgba(122,81,223,0.4) 100%);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    border: 2px solid rgba(228,180,99,0.35);
+  }
+  .hero-center-word {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.75rem);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .hero-center-sub {
+    font-size: 0.75rem;
+    color: var(--saffron);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+  .orbit-dot {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px var(--gold);
+  }
+  .orbit-dot:nth-child(4) { top: 6%; left: 50%; }
+  .orbit-dot:nth-child(5) { bottom: 8%; right: 15%; background: var(--blush); box-shadow: 0 0 12px var(--blush); }
+  .orbit-dot:nth-child(6) { top: 30%; left: 3%; background: var(--saffron); box-shadow: 0 0 12px var(--saffron); }
+
+  /* floating label cards */
+  .hero-float-card {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .hero-float-card:nth-child(7) { top: 10%; left: -10%; }
+  .hero-float-card:nth-child(8) { bottom: 20%; right: -8%; }
+  .hero-float-card:nth-child(9) { bottom: 5%; left: 5%; }
+
+  /* ── SECTION BASE ── */
+  section { position: relative; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--warm-violet);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  h2.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--deep-plum);
+    margin-bottom: 1.25rem;
+  }
+  h2.section-title em { font-style: normal; color: var(--warm-violet); }
+  .section-body {
+    font-size: 1.05rem;
+    color: var(--mid-gray);
+    line-height: 1.8;
+    max-width: 680px;
+  }
+
+  /* ── WHAT IS THIS ── */
+  #what {
+    background: var(--white);
+    padding: 7rem 0;
+  }
+  .what-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .what-pillars {
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .pillar {
+    display: flex; align-items: flex-start; gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: var(--off-white);
+    border-left: 4px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .pillar:hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(122,81,223,0.08); }
+  .pillar:nth-child(1) { border-color: var(--warm-violet); }
+  .pillar:nth-child(2) { border-color: var(--gold); }
+  .pillar:nth-child(3) { border-color: var(--saffron); }
+  .pillar-icon {
+    width: 48px; height: 48px; flex-shrink: 0;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .pillar:nth-child(1) .pillar-icon { background: rgba(122,81,223,0.1); }
+  .pillar:nth-child(2) .pillar-icon { background: rgba(228,180,99,0.12); }
+  .pillar:nth-child(3) .pillar-icon { background: rgba(206,183,255,0.15); }
+  .pillar-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--deep-plum);
+    margin-bottom: 0.25rem;
+  }
+  .pillar-desc {
+    font-size: 0.9rem;
+    color: var(--mid-gray);
+    line-height: 1.6;
+  }
+  .what-stat-block {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .stat-card {
+    background: linear-gradient(135deg, var(--deep-plum), var(--warm-violet));
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    color: white;
+    text-align: center;
+  }
+  .stat-card:nth-child(2) { background: linear-gradient(135deg, #5a3db8, #7a51df); }
+  .stat-card:nth-child(3) { background: linear-gradient(135deg, #b08020, var(--gold)); color: var(--deep-plum); }
+  .stat-card:nth-child(4) { background: linear-gradient(135deg, #2a2d7a, #4a51c0); }
+  .stat-num {
+    font-family: var(--font-stamp);
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-desc {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+
+  /* ── EXPERIENCE ── */
+  #experience {
+    padding: 7rem 0;
+    background: linear-gradient(160deg, var(--deep-plum) 0%, #1e2260 50%, #3a2880 100%);
+    overflow: hidden;
+    position: relative;
+  }
+  #experience::before {
+    content: 'EXPERIENCE';
+    position: absolute;
+    font-family: var(--font-stamp);
+    font-size: clamp(8rem, 15vw, 18rem);
+    color: rgba(255,255,255,0.03);
+    top: 50%; transform: translateY(-50%);
+    left: -2rem;
+    pointer-events: none;
+  }
+  #experience .section-label { color: var(--saffron); }
+  #experience h2.section-title { color: var(--white); }
+  #experience .section-body { color: rgba(255,255,255,0.7); max-width: 600px; margin-bottom: 4rem; }
+  .experience-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    position: relative;
+  }
+  .exp-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .exp-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.1); }
+  .exp-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .exp-card:nth-child(1)::after { background: linear-gradient(90deg, var(--warm-violet), #a07ae0); }
+  .exp-card:nth-child(2)::after { background: linear-gradient(90deg, var(--gold), #f0cc88); }
+  .exp-card:nth-child(3)::after { background: linear-gradient(90deg, var(--saffron), #e8d4ff); }
+  .exp-num {
+    font-family: var(--font-stamp);
+    font-size: 4rem;
+    color: rgba(255,255,255,0.08);
+    line-height: 1;
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+  }
+  .exp-stage {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+  .exp-card:nth-child(1) .exp-stage { color: #a07ae0; }
+  .exp-card:nth-child(2) .exp-stage { color: var(--gold); }
+  .exp-card:nth-child(3) .exp-stage { color: var(--saffron); }
+  .exp-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .exp-desc {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.75;
+  }
+  .exp-desc strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+  .experience-cta {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  /* ── WHY IT MATTERS ── */
+  #why {
+    padding: 7rem 0;
+    background: var(--cream);
+  }
+  .why-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .why-text .section-body { margin-bottom: 1.5rem; }
+  .quote-block {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 3rem;
+    position: relative;
+    box-shadow: 0 8px 40px rgba(45,27,78,0.08);
+  }
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 7rem;
+    color: var(--light-gray);
+    line-height: 0.5;
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+  }
+  .quote-text {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    font-style: normal;
+    color: var(--deep-plum);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+  .quote-attr {
+    font-size: 0.85rem;
+    color: var(--mid-gray);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border-top: 1px solid var(--light-gray);
+    padding-top: 1rem;
+  }
+  .quote-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 2.5rem;
+    width: 4px; height: 40%;
+    background: linear-gradient(180deg, var(--warm-violet), transparent);
+    border-radius: 2px;
+  }
+
+  /* ── HELLO PUYALLUP ── */
+  #pilot {
+    padding: 7rem 0;
+    background: var(--white);
+  }
+  .pilot-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: center; }
+  .pilot-timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item {
+    display: grid; grid-template-columns: 60px 1fr;
+    gap: 1rem; padding-bottom: 1.75rem;
+    position: relative;
+  }
+  .timeline-item:not(:last-child) .timeline-left::after {
+    content: '';
+    position: absolute;
+    top: 42px; left: 29px;
+    width: 2px; height: calc(100% - 10px);
+    background: linear-gradient(180deg, var(--warm-violet), transparent);
+  }
+  .timeline-left { position: relative; display: flex; flex-direction: column; align-items: center; }
+  .timeline-dot {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.8rem;
+    flex-shrink: 0;
+    color: white;
+    z-index: 1;
+  }
+  .timeline-item:nth-child(1) .timeline-dot { background: var(--warm-violet); }
+  .timeline-item:nth-child(2) .timeline-dot { background: var(--gold); color: var(--charcoal); }
+  .timeline-item:nth-child(3) .timeline-dot { background: var(--blush); }
+  .timeline-item:nth-child(4) .timeline-dot { background: var(--deep-plum); }
+  .timeline-item:nth-child(5) .timeline-dot { background: #2a6e50; }
+  .timeline-month { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-violet); margin-bottom: 0.2rem; }
+  .timeline-event { font-weight: 600; font-size: 1rem; color: var(--deep-plum); }
+  .timeline-detail { font-size: 0.875rem; color: var(--mid-gray); line-height: 1.5; margin-top: 0.2rem; }
+
+  /* ── WHO IT'S FOR ── */
+  #who {
+    padding: 7rem 0;
+    background: linear-gradient(120deg, #0e1035 0%, var(--deep-plum) 100%);
+  }
+  #who .section-label { color: var(--saffron); }
+  #who h2.section-title { color: var(--white); }
+  #who .section-body { color: rgba(255,255,255,0.65); margin-bottom: 3rem; }
+  .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .audience-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(206,183,255,0.15);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .audience-card:hover { background: rgba(122,81,223,0.15); transform: translateY(-4px); }
+  .audience-emoji { font-size: 2rem; margin-bottom: 0.75rem; }
+  .audience-title { font-weight: 700; color: var(--white); margin-bottom: 0.4rem; font-size: 1.05rem; }
+  .audience-desc { font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.55; }
+
+  /* ── GET INVOLVED ── */
+  #involve {
+    padding: 7rem 0;
+    background: var(--cream);
+  }
+  .involve-header { text-align: center; max-width: 700px; margin: 0 auto 4rem; }
+  .involve-header .section-body { margin: 0 auto; }
+  .involve-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .involve-card {
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .involve-card:hover { transform: translateY(-8px); box-shadow: 0 16px 48px rgba(0,0,0,0.12); }
+  .involve-card:nth-child(1) { background: linear-gradient(145deg, var(--deep-plum), var(--warm-violet)); color: white; }
+  .involve-card:nth-child(2) { background: linear-gradient(145deg, #9a6b10, var(--gold)); color: white; }
+  .involve-card:nth-child(3) { background: linear-gradient(145deg, #3a2880, #7a51df); color: white; }
+  .involve-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.75rem;
+    margin: 0 auto 1.5rem;
+  }
+  .involve-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .involve-desc { font-size: 0.9rem; opacity: 0.8; line-height: 1.65; margin-bottom: 1.75rem; }
+  .btn-card {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .btn-card:hover { background: rgba(255,255,255,0.3); }
+
+  /* ── STAY CONNECTED ── */
+  #connect {
+    padding: 7rem 0;
+    background: linear-gradient(135deg, var(--off-white) 0%, #ede8ff 100%);
+  }
+  .connect-inner {
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: start;
+  }
+  .connect-list {
+    list-style: none; margin-top: 1.5rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .connect-list li {
+    font-size: 0.95rem;
+    color: var(--mid-gray);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--light-gray);
+  }
+  .connect-form-wrap {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 40px rgba(122,81,223,0.08);
+    border: 1px solid rgba(122,81,223,0.1);
+  }
+  .connect-form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--deep-plum);
+    font-family: var(--font-display);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--light-gray);
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--charcoal);
+    background: var(--cream);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    resize: vertical;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--warm-violet);
+    box-shadow: 0 0 0 3px rgba(122,81,223,0.12);
+    background: white;
+  }
+  .btn-form {
+    background: linear-gradient(135deg, var(--warm-violet), #5a3db8);
+    color: white;
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(122,81,223,0.3);
+    align-self: flex-start;
+  }
+  .btn-form:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(122,81,223,0.4); }
+  .form-success {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--warm-violet);
+    font-size: 1rem;
+    padding: 0.75rem 0;
+  }
+
+  /* ── VISION ── */
+  #vision {
+    padding: 7rem 0;
+    background: var(--white);
+  }
+  .vision-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
+  .vision-graphic {
+    background: linear-gradient(145deg, var(--deep-plum), #4a2d9e);
+    border-radius: 24px;
+    padding: 3.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .vision-graphic::before {
+    content: '∞';
+    position: absolute;
+    font-size: 20rem;
+    color: rgba(255,255,255,0.04);
+    top: -4rem; right: -4rem;
+    line-height: 1;
+  }
+  .vision-steps { display: flex; flex-direction: column; gap: 1.5rem; position: relative; }
+  .vision-step {
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .vstep-num {
+    font-family: var(--font-stamp);
+    font-size: 2.5rem;
+    color: rgba(228,180,99,0.45);
+    line-height: 1;
+    width: 2rem; flex-shrink: 0;
+  }
+  .vstep-content {}
+  .vstep-title { font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+  .vstep-desc { font-size: 0.875rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+  .vision-text .section-body { margin-bottom: 2rem; }
+
+  /* ── FINAL CTA ── */
+  #finale {
+    padding: 8rem 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(122,81,223,0.5) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(228,180,99,0.25) 0%, transparent 50%),
+      linear-gradient(145deg, var(--deep-plum) 0%, #1e2260 60%, #3a2880 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #finale::before {
+    content: 'HELLO';
+    position: absolute;
+    font-family: var(--font-stamp);
+    font-size: clamp(10rem, 22vw, 24rem);
+    color: rgba(255,255,255,0.025);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+  .finale-content { position: relative; }
+  .finale-tag {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+  h2.finale-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  h2.finale-title em { font-style: normal; color: var(--gold); }
+  .finale-sub {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.7);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.8;
+  }
+  .finale-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-finale {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), #c89a30);
+    color: var(--charcoal);
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 32px rgba(232,160,32,0.4);
+  }
+  .btn-finale:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(232,160,32,0.55); }
+  .btn-finale-ghost {
+    display: inline-block;
+    border: 2px solid rgba(255,255,255,0.35);
+    color: white;
+    font-weight: 500;
+    font-size: 1.05rem;
+    padding: 0.95rem 2.25rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-finale-ghost:hover { border-color: var(--saffron); background: rgba(232,160,32,0.1); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.5);
+    padding: 3rem 0;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+  footer strong { color: rgba(255,255,255,0.8); }
+  footer a { color: var(--saffron); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  /* Fallback: if JS hasn't run yet, still show content */
+  .no-js .reveal { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; }
+    .hero-visual { display: none; }
+    .what-inner, .why-inner, .pilot-inner, .vision-inner, .connect-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .experience-grid, .audience-grid, .involve-cards { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    h2.section-title { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+    .container { padding: 0 1.25rem; }
+    section { padding: 4rem 0 !important; }
+    .what-stat-block { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    h1.hero-headline { font-size: 3rem; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .finale-actions { flex-direction: column; align-items: center; }
+    .what-stat-block { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <a href="#" class="nav-logo">UNITY SPARK</a>
+  <ul class="nav-links">
+    <li><a href="#what">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#pilot">Hello Puyallup</a></li>
+    <li><a href="#involve">Get Involved</a></li>
+    <li><a href="#connect">Stay Connected</a></li>
+    <li><a href="#finale" class="nav-cta">Join Us</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-tag">Unity Spark Project</div>
+    <h1 class="hero-headline">
+      Hello<br><em>Neighbor.</em>
+    </h1>
+    <p class="hero-sub">A simple act. A powerful beginning.</p>
+    <div class="hero-manifesto">
+      <p>
+        We don't heal communities by arguing.<br>
+        We heal them by <strong>beginning.</strong><br>
+        Division is the poison.<br>
+        <strong>Connection is the cure.</strong><br>
+        Be the antidote. Start with hello.
+      </p>
+    </div>
+    <div class="hero-actions">
+      <a href="#involve" class="btn-primary">Join the Movement</a>
+      <a href="#experience" class="btn-outline">Attend a Cultural Exchange</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-circle-stack">
+      <div class="hero-ring"></div>
+      <div class="hero-ring"></div>
+      <div class="hero-ring"></div>
+      <div class="hero-center">
+        <div class="hero-center-word">HELLO<br>NEIGHBOR</div>
+        <div class="hero-center-sub">Say it first.</div>
+      </div>
+      <div class="orbit-dot"></div>
+      <div class="orbit-dot"></div>
+      <div class="orbit-dot"></div>
+      <div class="hero-float-card">🌿 Storytelling</div>
+      <div class="hero-float-card">🤝 Deep Listening</div>
+      <div class="hero-float-card">✨ Shared Humanity</div>
+    </div>
+  </div>
+  <div class="hero-bg-text">HELLO</div>
+</section>
+
+<!-- ══════════════════ WHAT IS THIS ══════════════════ -->
+<section id="what">
+  <div class="container">
+    <div class="what-inner">
+      <div class="what-text reveal">
+        <div class="section-label">What This Is</div>
+        <h2 class="section-title">A Connected<br><em>Community Experience</em></h2>
+        <p class="section-body">
+          Unity Spark Project is a community-driven initiative designed to bring people together across differences through storytelling, deep listening, and shared experiences.
+        </p>
+        <p class="section-body" style="margin-top: 1rem;">
+          This is how we rebuild trust.<br>This is how we create belonging.<br>This is how communities begin again—together.
+        </p>
+        <div class="what-stat-block" style="margin-top: 2rem;">
+          <div class="stat-card reveal reveal-delay-1">
+            <div class="stat-num">3</div>
+            <div class="stat-desc">Day Cultural Exchange Weekends</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-2">
+            <div class="stat-num">5</div>
+            <div class="stat-desc">Community Catalysts in Action</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-3">
+            <div class="stat-num">1st</div>
+            <div class="stat-desc">Mayor-Led Citywide Pilot</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-4">
+            <div class="stat-num">∞</div>
+            <div class="stat-desc">Connections Waiting to Begin</div>
+          </div>
+        </div>
+      </div>
+      <div class="what-pillars reveal">
+        <div class="pillar">
+          <div class="pillar-icon">👂</div>
+          <div>
+            <div class="pillar-title">Listen</div>
+            <div class="pillar-desc">Create intentional space to hear lived experiences across cultures, generations, and neighborhoods.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">📖</div>
+          <div>
+            <div class="pillar-title">Share</div>
+            <div class="pillar-desc">Exchange stories that reveal our shared humanity and the beauty of our differences.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🔗</div>
+          <div>
+            <div class="pillar-title">Connect</div>
+            <div class="pillar-desc">Build lasting relationships that become the foundation of a stronger, more caring community.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ EXPERIENCE ══════════════════ -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">How It Unfolds</div>
+    <h2 class="section-title" style="color:white;">Connection Happens <em style="color:var(--saffron);">In Stages</em></h2>
+    <p class="section-body">
+      Hello Puyallup grows organically — beginning with seeing one another, then talking with one another, then truly knowing one another.
+    </p>
+    <div class="experience-grid">
+      <div class="exp-card reveal">
+        <div class="exp-num">01</div>
+        <div class="exp-stage">SEE</div>
+        <div class="exp-title">Hello Puyallup Public Art</div>
+        <div class="exp-desc">
+          <strong>Neighbor portraits displayed throughout the community.</strong> Trained interviewers and photographers capture the faces and stories of Puyallup residents — sharing them publicly so we can see and appreciate who lives here.
+        </div>
+      </div>
+      <div class="exp-card reveal reveal-delay-2">
+        <div class="exp-num">02</div>
+        <div class="exp-stage">TALK</div>
+        <div class="exp-title">Community Conversations</div>
+        <div class="exp-desc">
+          <strong>Farmer's Market pop-ups and outdoor gatherings, through October.</strong> Informal, open spaces where neighbors slow down, share a story, and find common ground with the person right next to them.
+        </div>
+      </div>
+      <div class="exp-card reveal reveal-delay-3">
+        <div class="exp-num">03</div>
+        <div class="exp-stage">KNOW</div>
+        <div class="exp-title">Cultural Exchange Experiences</div>
+        <div class="exp-desc">
+          <strong>Facilitated gatherings that go deeper.</strong> Small groups come together across cultures and neighborhoods for storytelling, deep listening, and dialogue. This is where empathy takes root.
+        </div>
+      </div>
+    </div>
+    <div class="experience-cta">
+      <a href="#involve" class="btn-primary" style="margin-top:2rem; display:inline-block;">Get Involved →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ WHY IT MATTERS ══════════════════ -->
+<section id="why">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-text reveal">
+        <div class="section-label">Why It Matters</div>
+        <h2 class="section-title">This Is Not Just<br>a <em>Program.</em></h2>
+        <p class="section-body">
+          We are living in a time of deep division, disconnection, and isolation. But what if the solution isn't louder debate — it's deeper connection?
+        </p>
+        <p class="section-body" style="margin-top: 1rem;">
+          Stronger communities don't happen by accident. They are built through intentional relationships, shared understanding, and collective care.
+        </p>
+        <p class="section-body" style="margin-top: 1rem; color: var(--deep-plum); font-weight: 600;">
+          It's a new model for how we live together.
+        </p>
+      </div>
+      <div class="quote-block reveal">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">
+          This work cannot be automated or outsourced. It must be held by an organization rooted in trust, story, and humanity.
+        </p>
+        <div class="quote-attr">
+          Unity Spark Project — Hello Puyallup Initiative Brief
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HELLO PUYALLUP PILOT ══════════════════ -->
+<section id="pilot">
+  <div class="container">
+    <div class="pilot-inner">
+      <div class="reveal">
+        <div class="section-label">Hello Puyallup</div>
+        <h2 class="section-title">A Living Model for<br><em>Civic Belonging</em></h2>
+        <p class="section-body">
+          Hello Puyallup is a mayor-led pilot that brings this vision to life — inviting neighbors to connect, listen, and build community together. Through storytelling, cultural exchange, and shared experiences, this initiative transforms neighborliness into a visible and powerful civic value.
+        </p>
+        <p class="section-body" style="margin-top: 1rem;">
+          Led by Unity Spark in partnership with the City of Puyallup, this pilot is intentionally designed from the outset to become a replicable national model for civic neighborliness.
+        </p>
+        <a href="#involve" class="btn-primary" style="display:inline-block; margin-top:2rem;">Learn About the Pilot →</a>
+      </div>
+      <div class="pilot-timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-dot">NOW</div>
+          </div>
+          <div>
+            <div class="timeline-month">First</div>
+            <div class="timeline-event">Hello Puyallup Public Art</div>
+            <div class="timeline-detail">Neighbor portraits go up throughout the community. Trained interviewers and photographers capture the faces and stories of Puyallup — displayed publicly for as long as possible so everyone can see who their neighbors really are.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-dot" style="background:var(--gold);color:var(--charcoal);">NEXT</div>
+          </div>
+          <div>
+            <div class="timeline-month">Then</div>
+            <div class="timeline-event">Community Conversations</div>
+            <div class="timeline-detail">Informal gatherings at the Farmer's Market and outdoor pop-ups, running through October. Open to everyone — no registration required, just show up and say hello.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-dot" style="background:var(--saffron);color:var(--charcoal);">THEN</div>
+          </div>
+          <div>
+            <div class="timeline-month">Ongoing</div>
+            <div class="timeline-event">Cultural Exchange Experiences</div>
+            <div class="timeline-detail">Facilitated small-group gatherings across cultures and neighborhoods. Dates and number of events to be announced — follow along to stay in the loop.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-dot" style="background:#2a6e50;">2025+</div>
+          </div>
+          <div>
+            <div class="timeline-month">Future</div>
+            <div class="timeline-event">Multicultural Celebration</div>
+            <div class="timeline-detail">A citywide Folklorama-inspired celebration is being planned for a future year — designed to be annual, community-owned, and built on everything this pilot teaches us.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ WHO IT'S FOR ══════════════════ -->
+<section id="who">
+  <div class="container">
+    <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem;" class="reveal">
+      <div class="section-label">Who This Is For</div>
+      <h2 class="section-title" style="color:white;">This Space Was<br>Created for <em>You.</em></h2>
+      <p class="section-body">
+        This space was created for anyone who wants to feel more connected — to themselves, their community, and the world around them.
+      </p>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card reveal">
+        <div class="audience-emoji">🏘️</div>
+        <div class="audience-title">Community Members</div>
+        <div class="audience-desc">Neighbors seeking belonging, connection, and a greater sense of home in their own city.</div>
+      </div>
+      <div class="audience-card reveal reveal-delay-1">
+        <div class="audience-emoji">🌱</div>
+        <div class="audience-title">Youth Leaders</div>
+        <div class="audience-desc">Emerging voices ready to shape the communities they'll inherit — through listening, storytelling, and action.</div>
+      </div>
+      <div class="audience-card reveal reveal-delay-2">
+        <div class="audience-emoji">🎭</div>
+        <div class="audience-title">Cultural Organizers</div>
+        <div class="audience-desc">Grassroots leaders and cultural ambassadors who know connection is a form of civic power.</div>
+      </div>
+      <div class="audience-card reveal reveal-delay-3">
+        <div class="audience-emoji">🏛️</div>
+        <div class="audience-title">Civic Leaders</div>
+        <div class="audience-desc">Institutional partners who believe governance works best when it's grounded in real relationships.</div>
+      </div>
+      <div class="audience-card reveal reveal-delay-4">
+        <div class="audience-emoji">🤲</div>
+        <div class="audience-title">Funders & Supporters</div>
+        <div class="audience-desc">Individuals and organizations ready to invest in what actually heals communities — human connection.</div>
+      </div>
+      <div class="audience-card reveal reveal-delay-2">
+        <div class="audience-emoji">✨</div>
+        <div class="audience-title">Anyone Ready to Begin</div>
+        <div class="audience-desc">You don't need credentials. You don't need experience. You just need a willingness to say hello.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ GET INVOLVED ══════════════════ -->
+<section id="involve">
+  <div class="container">
+    <div class="involve-header reveal">
+      <div class="section-label">Get Involved</div>
+      <h2 class="section-title">Be Part of the <em>Movement</em></h2>
+      <p class="section-body">
+        There are many ways to step into this work — whether you're just beginning or ready to lead.
+      </p>
+    </div>
+    <div class="involve-cards">
+      <div class="involve-card reveal">
+        <div class="involve-icon">🗓️</div>
+        <div class="involve-title">Attend</div>
+        <p class="involve-desc">Join a Cultural Exchange Weekend and experience it firsthand. No experience needed — just an open heart.</p>
+        <a href="#" class="btn-card">Register Now</a>
+      </div>
+      <div class="involve-card reveal reveal-delay-2">
+        <div class="involve-icon">🤝</div>
+        <div class="involve-title">Partner</div>
+        <p class="involve-desc">Collaborate with us to bring this work into your community, school, or organization. Let's co-create something lasting.</p>
+        <a href="#" class="btn-card">Explore Partnership</a>
+      </div>
+      <div class="involve-card reveal reveal-delay-3">
+        <div class="involve-icon">💛</div>
+        <div class="involve-title">Support</div>
+        <p class="involve-desc">Help us grow this work through funding, advocacy, and connection. Your investment builds something real.</p>
+        <a href="#" class="btn-card">Donate / Fund</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ STAY CONNECTED ══════════════════ -->
+<section id="connect">
+  <div class="container">
+    <div class="connect-inner reveal">
+      <div class="connect-text">
+        <div class="section-label">Stay in the Loop</div>
+        <h2 class="section-title">Be the First to<br><em>Know What's Next</em></h2>
+        <p class="section-body">
+          Events are being added. Stories are being collected. Things are happening. Drop your name and email and we'll keep you connected to everything Hello Puyallup.
+        </p>
+        <ul class="connect-list">
+          <li>📸 Public art installation updates</li>
+          <li>🗣️ Community Conversation dates and locations</li>
+          <li>🤝 Cultural Exchange event announcements</li>
+          <li>✨ Stories and photos from the field</li>
+        </ul>
+      </div>
+      <div class="connect-form-wrap">
+        <form class="connect-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" placeholder="Your first name" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" placeholder="Your last name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="interest">I'm most interested in…</label>
+            <select id="interest">
+              <option value="">Select one</option>
+              <option>Attending a Community Conversation</option>
+              <option>Participating in a Cultural Exchange</option>
+              <option>Volunteering or helping organize</option>
+              <option>Partnering with Unity Spark</option>
+              <option>Supporting as a funder</option>
+              <option>Just staying informed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Anything you'd like to share? <span style="opacity:0.5; font-weight:400;">(optional)</span></label>
+            <textarea id="message" rows="3" placeholder="A question, a story, a hello…"></textarea>
+          </div>
+          <button type="submit" class="btn-form">Say Hello →</button>
+          <div id="form-success" style="display:none;" class="form-success">
+            ✦ Thank you! We'll be in touch soon.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ VISION ══════════════════ -->
+<section id="vision">
+  <div class="container">
+    <div class="vision-inner">
+      <div class="vision-text reveal">
+        <div class="section-label">This Is Just the Beginning</div>
+        <h2 class="section-title">What Starts with<br><em>Hello</em> Grows<br>Into Something Big.</h2>
+        <p class="section-body">
+          What starts with a simple "hello" grows into something much bigger — stronger relationships, healthier communities, and a shared vision for the future.
+        </p>
+        <p class="section-body" style="margin-top: 1rem; color: var(--deep-plum); font-weight: 600;">
+          We are building something that can live in cities everywhere. And it starts right here.
+        </p>
+      </div>
+      <div class="vision-graphic reveal">
+        <div class="vision-steps">
+          <div class="vision-step">
+            <div class="vstep-num">1</div>
+            <div class="vstep-content">
+              <div class="vstep-title">A simple hello</div>
+              <div class="vstep-desc">One neighbor reaches out. One connection begins. One moment of courage changes everything.</div>
+            </div>
+          </div>
+          <div class="vision-step">
+            <div class="vstep-num">2</div>
+            <div class="vstep-content">
+              <div class="vstep-title">A community listens</div>
+              <div class="vstep-desc">Stories are shared. Differences are honored. Trust begins to replace assumption.</div>
+            </div>
+          </div>
+          <div class="vision-step">
+            <div class="vstep-num">3</div>
+            <div class="vstep-content">
+              <div class="vstep-title">A city transforms</div>
+              <div class="vstep-desc">Relationships become civic infrastructure. Belonging becomes a governing value. Community becomes something people build together.</div>
+            </div>
+          </div>
+          <div class="vision-step">
+            <div class="vstep-num">∞</div>
+            <div class="vstep-content">
+              <div class="vstep-title">A national model emerges</div>
+              <div class="vstep-desc">What works in Puyallup travels to the next city. The beloved community spreads one hello at a time.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FINAL CTA ══════════════════ -->
+<section id="finale">
+  <div class="container">
+    <div class="finale-content reveal">
+      <div class="finale-tag">✦ The invitation is open ✦</div>
+      <h2 class="finale-title">Start with<br><em>Hello.</em></h2>
+      <p class="finale-sub">
+        You don't need the perfect words.<br>You don't need a plan.<br>Just begin.
+      </p>
+      <div class="finale-actions">
+        <a href="#" class="btn-finale">Say Hello — Register Now</a>
+        <a href="#involve" class="btn-finale-ghost">Learn More First</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="container">
+    <p>
+      <strong>Unity Spark Project</strong> — <em>Hello Puyallup</em><br>
+      Led by Unity Infusion in partnership with the City of Puyallup<br><br>
+      <a href="#"><span class="__cf_email__" data-cfemail="6f070a0303002f1a01061b160601091a1c06000141001d08">[email&#160;protected]</span></a> &nbsp;|&nbsp; <a href="#">Contact Us</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a>
+    </p>
+    <p style="margin-top: 1rem; opacity: 0.4; font-size: 0.8rem;">
+      Bringing humanity back to our civic life, beginning with a simple hello.
+    </p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Form submit (placeholder — wire to Mailchimp or backend)
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.querySelector('.btn-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+
+  // Mark all reveals visible immediately as a safety net,
+  // then re-hide and re-animate ones not yet in view
+  const reveals = document.querySelectorAll('.reveal');
+
+  // First pass: make everything visible so nothing is hidden on load
+  reveals.forEach(el => el.classList.add('visible'));
+
+  // If IntersectionObserver is available, do the staggered reveal properly
+  if ('IntersectionObserver' in window) {
+    // Re-hide elements that are below the fold
+    reveals.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top > window.innerHeight) {
+        el.classList.remove('visible');
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+    reveals.forEach(el => {
+      if (!el.classList.contains('visible')) {
+        observer.observe(el);
+      }
+    });
+  }
+
+  // Nav active state
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 100;
+    sections.forEach(s => {
+      const top = s.offsetTop, bottom = top + s.offsetHeight;
+      if (y >= top && y < bottom) {
+        document.querySelectorAll('.nav-links a').forEach(a => {
+          a.style.color = a.getAttribute('href') === `#${s.id}`
+            ? 'var(--gold)' : 'rgba(255,255,255,0.8)';
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>
