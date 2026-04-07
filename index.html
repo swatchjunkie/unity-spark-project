@@ -379,14 +379,14 @@
   #experience h2.section-title { color: var(--white); }
   #experience .section-body { color: rgba(255,255,255,0.7); max-width: 600px; margin-bottom: 4rem; }
   .experience-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
     position: relative;
   }
   .exp-card {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 20px;
-    padding: 2.5rem 2rem;
+    padding: 2.5rem 1.75rem;
     position: relative;
     overflow: hidden;
     transition: transform 0.3s, background 0.3s;
@@ -401,6 +401,7 @@
   .exp-card:nth-child(1)::after { background: linear-gradient(90deg, var(--warm-violet), #a07ae0); }
   .exp-card:nth-child(2)::after { background: linear-gradient(90deg, var(--gold), #f0cc88); }
   .exp-card:nth-child(3)::after { background: linear-gradient(90deg, var(--saffron), #e8d4ff); }
+  .exp-card:nth-child(4)::after { background: linear-gradient(90deg, #e06090, #f0a0c0); }
   .exp-num {
     font-family: var(--font-stamp);
     font-size: 4rem;
@@ -419,6 +420,7 @@
   .exp-card:nth-child(1) .exp-stage { color: #a07ae0; }
   .exp-card:nth-child(2) .exp-stage { color: var(--gold); }
   .exp-card:nth-child(3) .exp-stage { color: var(--saffron); }
+  .exp-card:nth-child(4) .exp-stage { color: #f0a0c0; }
   .exp-title {
     font-family: var(--font-display);
     font-size: 1.5rem;
@@ -1068,20 +1070,20 @@
     <div class="section-label">How It Unfolds</div>
     <h2 class="section-title" style="color:white;">Connection Happens <em style="color:var(--saffron);">In Stages</em></h2>
     <p class="section-body">
-      Hello Puyallup grows organically — beginning with seeing one another, then talking with one another, then truly knowing one another.
+      Unity Spark Project unfolds in four stages — each one building on the last, from seeing our neighbors to truly celebrating who we are together.
     </p>
     <div class="experience-grid">
       <div class="exp-card reveal">
         <div class="exp-num">01</div>
         <div class="exp-stage">SEE</div>
-        <div class="exp-title">Hello Puyallup Public Art</div>
+        <div class="exp-title">Hello Neighbor</div>
         <div class="exp-desc">
           <strong>Neighbor portraits displayed throughout the community.</strong> Trained interviewers and photographers capture the faces and stories of Puyallup residents — sharing them publicly so we can see and appreciate who lives here.
         </div>
       </div>
       <div class="exp-card reveal reveal-delay-2">
         <div class="exp-num">02</div>
-        <div class="exp-stage">TALK</div>
+        <div class="exp-stage">HEAR</div>
         <div class="exp-title">Community Conversations</div>
         <div class="exp-desc">
           <strong>Farmer's Market pop-ups and outdoor gatherings, through October.</strong> Informal, open spaces where neighbors slow down, share a story, and find common ground with the person right next to them.
@@ -1093,6 +1095,14 @@
         <div class="exp-title">Cultural Exchange Experiences</div>
         <div class="exp-desc">
           <strong>Facilitated gatherings that go deeper.</strong> Small groups come together across cultures and neighborhoods for storytelling, deep listening, and dialogue. This is where empathy takes root.
+        </div>
+      </div>
+      <div class="exp-card reveal reveal-delay-4">
+        <div class="exp-num">04</div>
+        <div class="exp-stage">CELEBRATE</div>
+        <div class="exp-title">Multicultural Festival</div>
+        <div class="exp-desc">
+          <strong>A citywide Folklorama-inspired celebration — coming in a future year.</strong> Food, art, music, storytelling, and shared joy. Built on everything this pilot teaches us, designed to be annual and community-owned.
         </div>
       </div>
     </div>
